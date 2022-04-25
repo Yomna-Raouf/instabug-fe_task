@@ -1,6 +1,7 @@
 <template>
   <div class="c-chart__container">
-    <v-chart ref="chart" :option="chartOptions" />
+    <div v-if="loading" > Loading... </div>
+    <v-chart v-else ref="chart" :option="chartOptions" />
   </div>
 </template>
 
@@ -49,7 +50,7 @@ export default {
     ...mapState(
       'team',
       {
-        chartData: state => state.records,
+        chartData: state => state.filteredRecords,
       }
     ),
     initOptions() {
