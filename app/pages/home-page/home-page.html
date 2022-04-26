@@ -1,13 +1,15 @@
 <div class="c-dashboard">
   <div class="c-filters__container">
-    [Place search component here]
+    <vue-component name="FilterFormComponent" v-on-filter-employees="homePageVm.handleFilterEmployeesEvent" />
   </div>
+</div>
 
-  <employees-list employees-list="homePageVm.employees"></employees-list>
 
-  <div class="c-dashboard__footer">
-    <button class="c-button">
-      Load More
-    </button>
-  </div>
+<employees-list filter-query="homePageVm.filterQuery" employees-list="homePageVm.employees"></employees-list>
+
+<div class="c-dashboard__footer">
+  <button class="c-button">
+    Load More
+  </button>
+</div>
 </div>
