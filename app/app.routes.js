@@ -10,6 +10,7 @@ angular
       .state({
         name: 'app',
         url: '/',
+        params: { filter: { dynamic: true } },
         templateUrl: './pages/home-page/home-page.html',
         controller: 'homeController',
         controllerAs: 'homePageVm',

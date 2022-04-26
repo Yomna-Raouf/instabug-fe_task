@@ -1,6 +1,7 @@
 <template>
   <div class="c-chart__container">
-    <v-chart ref="chart" :option="chartOptions" />
+    <div v-if="loading" > Loading... </div>
+    <v-chart v-else ref="chart" :option="chartOptions" />
   </div>
 </template>
 
@@ -16,6 +17,7 @@ import {
   VisualMapComponent,
 } from "echarts/components";
 import VChart from "vue-echarts";
+import { mapState } from 'vuex';
 
 use([
   CanvasRenderer,
@@ -35,40 +37,22 @@ export default {
 
   data() {
     return {
-      chartData: [
-        {
-          date_ms: 1641772800000,
-          performance: 0.2,
-        },
-        {
-          date_ms: 1641859200000,
-          performance: 0.33,
-        },
-        {
-          date_ms: 1641945600000,
-          performance: 0.53,
-        },
-        {
-          date_ms: 1642032000000,
-          performance: 0.31,
-        },
-        {
-          date_ms: 1642118400000,
-          performance: 0.65,
-        },
-        {
-          date_ms: 1642204800000,
-          performance: 0.88,
-        },
-        {
-          date_ms: 1642291200000,
-          performance: 0.07,
-        },
-      ],
+      loading: false,
+      
     };
   },
 
+  created() {
+    this.fetchRecords();
+  },
+
   computed: {
+    ...mapState(
+      'team',
+      {
+        chartData: state => state.filteredRecords,
+      }
+    ),
     initOptions() {
       return {
         width: "auto",
@@ -84,11 +68,44 @@ export default {
         },
         tooltip: {
           trigger: 'axis',
+          formatter: function(params) {
+            return `
+              ${params[0].name}
+              <br /> 
+              ${params[0].marker}
+              Team Performance index: ${params[0].value}%
+            `
+          } ,
           transitionDuration: 0,
           confine: false,
           hideDelay: 0,
-          padding: 0,
+          padding: 20,
+          textStyle: {
+            color: '#fff',
+          },
+          backgroundColor: '#1c1f26'
         },
+        visualMap: {
+        top: 50,
+        right: 10,
+        pieces: [
+          {
+            gt: 0,
+            lte: 50,
+            color: 'red'
+          },
+          {
+            gt: 50,
+            lte: 80,
+            color: 'yellow'
+          },
+          {
+            gt: 80,
+            lte: 100,
+            color: 'green'
+          },
+        ]
+      },
         grid: {
           left: "30px",
           right: "12px",
@@ -117,7 +134,7 @@ export default {
         },
         series: [
           {
-            data: this.yAxisData,
+            data:  this.yAxisData, 
             type: "line",
             symbol: "circle",
             symbolSize: 2,
@@ -125,7 +142,8 @@ export default {
             lineStyle: {
               width: 2,
             },
-          },
+          }
+          
         ],
       };
     },
@@ -140,6 +158,17 @@ export default {
   },
 
   methods: {
+    fetchRecords() {
+      this.loading = true;
+
+      this.$store.dispatch('team/fetchRecords')
+        .catch((error) => {
+          alert(error)
+        })
+        .finally(() => {
+          this.loading = false;
+        });
+    },
     formatDate(dateInMs) {
       return moment(dateInMs).format("DD MMM YYYY");
     },
