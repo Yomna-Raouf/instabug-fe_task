@@ -2,6 +2,7 @@ import Vue from 'vue';
 import 'ngVue';
 import 'ngVue/build/plugins.js';
 import store from './store';
+import NotfoundPage from './pages/404-page.vue';
 import PerformancePageComponent from './pages/performance-page.vue';
 import PerformanceChartComponent from './components/vue-components/performance-chart.vue';
 import FilterFormComponent from './components/vue-components/filter-form.vue';
@@ -16,6 +17,10 @@ appModule.config(($ngVueProvider) => {
   $ngVueProvider.setRootVueInstanceProps({
     store: store,
   });
+});
+
+appModule.directive('vNotfoundPage', (createVueComponent) => {
+  return createVueComponent(Vue.component('notfoundPage', NotfoundPage));
 });
 
 appModule.directive('vPerformancePage', (createVueComponent) => {
