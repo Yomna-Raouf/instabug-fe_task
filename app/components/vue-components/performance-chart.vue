@@ -68,10 +68,22 @@ export default {
         },
         tooltip: {
           trigger: 'axis',
+          formatter: function(params) {
+            return `
+              ${params[0].name}
+              <br /> 
+              ${params[0].marker}
+              Team Performance index: ${params[0].value}%
+            `
+          } ,
           transitionDuration: 0,
           confine: false,
           hideDelay: 0,
-          padding: 0,
+          padding: 20,
+          textStyle: {
+            color: '#fff',
+          },
+          backgroundColor: '#1c1f26'
         },
         visualMap: {
         top: 50,
