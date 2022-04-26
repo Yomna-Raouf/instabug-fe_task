@@ -16,6 +16,7 @@
   "devDependencies": {
     "@babel/core": "^7.16.7",
     "@babel/preset-env": "^7.8.7",
+    "@vue/test-utils": "^1.0.0-beta.26",
     "angularjs-template-loader": "^0.1.2",
     "babel-loader": "^8.2.3",
     "css-loader": "^6.5.1",
@@ -42,6 +43,7 @@
     "webpack-dev-server": "^4.7.3"
   },
   "scripts": {
-    "start": "webpack-dev-server --open --progress"
+    "start": "webpack-dev-server --open --progress",
+    "test": "jest"
   }
 }
